@@ -12,126 +12,72 @@ using Photon.Pun;
 using System.IO;
 using System.Linq;
 using ExitGames.Client.Photon;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace TooMuchInfo
-
 {
-
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
-
-
     public class Plugin : BaseUnityPlugin
-
     {
-        static Dictionary<string, string> specialPlayers = new Dictionary<string, string>
-{
-    { "9DBC90CF7449EF64", "StyledSnail" },
-    { "6FE5FF4D5DF68843", "Pine" },
-    { "52529F0635BE0CDF", "PapaSmurf" },
-    { "10D31D3BDCCE5B1F", "Deezey" },
-    { "BAC5807405123060", "britishmonke" },
-    { "A6FFC7318E1301AF", "jmancurly" },
-    { "3B9FD2EEF24ACB3", "VMT" },
-    { "04005517920EBO", "K9?" },
-    { "33FFA45DBFD33B01", "will" },
-    { "D6971CA01F82A975", "Elliot" },
-    { "636D8846E76C9B5A", "Clown" },
-    { "65CB0CCF1AED2BF", "Ethyb" },
-    { "48437FE432DE48BE", "BBVR" },
-    { "61AD990FF3A423B7", "Boda 1" },
-    { "AAB44BFD0BA34829", "Boda 2" },
-    { "6713DA80D2E9BFB5", "AHauntedArmy" },
-    { "B4A3FF01312B55B1", "Pluto" },
-    { "E354E818871BD1D8", "dev9998" },
-    { "F37C42AE22744DBA", "[G.r.a.z.e]" },
-    { "42D7D32651E93866", "Graze" },
-    { "FBE3EE50747CB892", "Gizmo" },
-    { "339E0D392565DC39", "kishark" },
-    { "F08CE3118F9E793E", "TurboAlligator" },
-    { "D6E20BE9655C798", "TTTPIG 1" },
-    { "71AA09D13C0F408D", "TTTPIG 2" },
-    { "1D6E20BE9655C798", "TTTPIG 3" },
-    { "22A7BCEFFD7A0BBA", "TTTPIG 4" },
-    { "C3878B068886F6C3", "ZZEN" },
-    { "6F79BE7CB34642AC", "CodyO'Quinn" },
-    { "5AA1231973BE8A62", "Apollo" },
-    { "7F31BEEC604AE189", "ElectronicWall 1" },
-    { "42C809327652ECDD", "ElectronicWall 2" },
-    { "ECDE8A2FF8510934", "Antoca" },
-    { "80279945E7D3B57D", "Jolyne" },
-    { "7E44E8337DF02CC1", "Nunya" },
-    { "DE601BC40DB68CE0", "Graic" },
-    { "F5B5C64914C13B83", "HatGirl" },
-    { "660814E013F31EFA", "HOLLOWZZGT" },
-    { "2E408ED946D55D51", "Haunted" },
-    { "D345FE394607F946", "Bzzz the 18th" },
-    { "498D4C2F23853B37", "POGTROLL" },
-    { "BC9764E1EADF8BE0", "Circuit" },
-    { "D0CB396539676DD8", "FrogIlla" },
-    { "A1A99D33645E4A94", "STEAMVRAVTS/YEAT" },
-    { "CA8FDFF42B7A1836", "Brokenstone" },
-    { "CBCCBBB6C28A94CF", "PTMstar" },
-    { "6DC06EEFFE9DBD39", "Lucio" },
-    { "4ACA3C76B334B17F", "Wihz" },
-    { "41988726285E534E", "Colussus" },
-    { "571776944B6162F1", "CubCub" },
-    { "FB5FCEBC4A0E0387", "PepsiDee" },
-    { "645222265FB972B", "Chaotic Asriel" },
-    { "BC99FA914F506AB8", "Lemming Steam" },
-    { "3A16560CA65A51DE", "Lemming Quest" },
-    { "59F3FE769DE93AB9", "Lemming Unity" },
-    { "EE9FB127CF7DBBD5", "NOTMARK" },
-    { "54DCB69545BE0800", "Biffbish" },
-    { "A04005517920EB0", "K9" },
-    { "3CB4F61C87A5AF24", "Octoburr/Evelyn" },
-    { "4994748F8B361E31", "Octoburr/Evelyn" },
-    { "5CCCAA8A225A468B", "furina" },
-    { "ABD60175B46E45C5", "Saltwater" },
-    { "964C4A68F65A804C", "YottaBite" },
-    { "8FECBBC89D69575E", "KyleTheScientist" },
-    { "4D5EB238C8253D04", "Person" },
-    { "B4E45E48C5CE0656", "ZBR" },
-    { "8A062E735BBC89ED", "GLTCH" },
-    { "A100E9E6C4D91E75", "MYCRAFTS" },
-    { "7952F9E08FEF8E83", "MYCRAFTS" },
-    { "10E12F25533C13F2", "KIRPI4" },
-    { "10621E029A675705", "AA_MIKE" },
-    { "F8FF7B812B0B2F72", "FOGGY" },
-    { "1E8298E1E1F40CB2", "FAADU" },
-    { "289C8FAD58A09D6D", "PIXEL" },
-    { "172E4982BEE4A8AD", "H4KPY" },
-    { "A339740A8ED97FC2", "COFFEEPERSON" },
-    { "502575B001FE6FCD", "MIKEYOURMAN" },
-    { "2FB3C7950D2159AF", "CLYDE" },
-    { "8FB9FEC5DBBA0C79", "GOOPER" },
-    { "378D7E14A11734FF", "ERIK1515" },
-    { "FD39927817389160", "FOOJ" },
-    { "A48744B93D9A3596", "HanSolo" },
-    { "B1B20DEEEDB71C63", "MonkY" },
-    { "C41A1A9055417A27", "Ariel" },
-    { "9ABD0C174289F58E", "baggZ" },
-    { "B5F9797560165521", "ZlothY" },
-    { "24EA3CB4A0106203", "ZlothY" }, 
-    { "376C2C7C27C0D613", "ZlothY" },
-    { "96A75B23C8BBB4C9", "ZlothY" }
-    
-   
-};
+        private static Dictionary<string, string[]> specialModsList = new Dictionary<string, string[]>();
+        private static Dictionary<string, string> specialPlayers = new Dictionary<string, string>();
+        private static HashSet<string> blacklisted = new HashSet<string>();
+        private static Dictionary<string, string> datePool = new Dictionary<string, string>();
 
-        static HashSet<string> blacklisted = new HashSet<string>
+        async void Awake()
         {
-            "91FA95E83DC36233" //[0SUNVR14K] spoofs every property
-        };
+            await LoadListsFromGitHub();
 
-        void Start()
-        {
             HarmonyPatches.ApplyHarmonyPatches();
+
             PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
             {
-                {
-                    PluginInfo.HashKey, PluginInfo.Version
-                }
+                { PluginInfo.HashKey, PluginInfo.Version }
             });
+        }
+
+        private async Task LoadListsFromGitHub()
+        {
+            try
+            {
+                using HttpClient client = new HttpClient();
+
+                string modsUrl = "https://raw.githubusercontent.com/ZlothY29IQ/GorillaInfo/refs/heads/main/KnownMods.txt";
+                string playersUrl = "https://raw.githubusercontent.com/ZlothY29IQ/GorillaInfo/refs/heads/main/KnownPeople.txt";
+                string blacklistUrl = "https://raw.githubusercontent.com/ZlothY29IQ/GorillaInfo/refs/heads/main/Blacklisted.txt";
+
+                string modsJson = await client.GetStringAsync(modsUrl);
+                string playersJson = await client.GetStringAsync(playersUrl);
+                string blacklistJson = await client.GetStringAsync(blacklistUrl);
+
+                var modsListObjects = JsonConvert.DeserializeObject<List<ModEntry>>(modsJson);
+                var playersListObjects = JsonConvert.DeserializeObject<List<PlayerEntry>>(playersJson);
+                var blacklistedIds = JsonConvert.DeserializeObject<List<string>>(blacklistJson);
+
+                specialModsList = modsListObjects.ToDictionary(x => x.Key, x => x.Value);
+                specialPlayers = playersListObjects.ToDictionary(x => x.Key, x => x.Value);
+                blacklisted = new HashSet<string>(blacklistedIds);
+
+                Logger.LogInfo("Special lists loaded from GitHub successfully.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Failed to load special lists from GitHub: " + ex.Message);
+            }
+        }
+
+        private class ModEntry
+        {
+            public string Key { get; set; }
+            public string[] Value { get; set; }
+        }
+
+        private class PlayerEntry
+        {
+            public string Key { get; set; }
+            public string Value { get; set; }
         }
 
         static string CheckCosmetics(VRRig rig)
@@ -144,11 +90,13 @@ namespace TooMuchInfo
                 { "LBADE.", new string[] { "FINGER PAINTER", "00FF00" } },
                 { "LBANI.", new string[] { "AA CREATOR", "40E0D0" } },
                 { "LBAGS.", new string[] { "ILLUSTRATOR", "C76417" } },
-                { "LMAPY.", new string[] { "FIRE STICK", "D73502" } } };
-            foreach (KeyValuePair<string, string[]> specialCosmetic in specialCosmetics)
+                { "LMAPY.", new string[] { "FIRE STICK", "D73502" } }
+            };
+
+            foreach (var specialCosmetic in specialCosmetics)
             {
                 if (rig.concatStringOfCosmeticsAllowed.Contains(specialCosmetic.Key))
-                    specialties += (specialties == "" ? "" : ", ") + "<color=#" + specialCosmetic.Value[1] + ">" + specialCosmetic.Value[0] + "</color>";
+                    specialties += (specialties == "" ? "" : ", ") + $"<color=#{specialCosmetic.Value[1]}>{specialCosmetic.Value[0]}</color>";
             }
 
             return specialties == "" ? null : specialties;
@@ -159,70 +107,14 @@ namespace TooMuchInfo
             string specialMods = "";
             NetPlayer creator = rig.Creator;
 
-            Dictionary<string, string[]> specialModsList = new Dictionary<string, string[]> {
-        {"GFaces", new string[] {"gFACES" , "707070"  } },
-        {"DeeTags", new string[] {"DEE TAGS" , "707070"  } },
-        {"Boy Do I Love Information", new string[] {"BDIL INFO" , "707070"  } },
-        {"NametagsPlusPlus", new string[] {"NAMETAGS++" , "707070"  } },
-        {"kingbingus.oculusreportmenu", new string[] {"OCULUS REPORT MENU" , "707070"  } },
-        {"github.com/maroon-shadow/SimpleBoards", new string[] {"SIMPLEBOARDS" , "707070"  } },
-        {"ObsidianMC", new string[] {"OBSIDIAN" , "DC143C" } },
-        {"hgrehngio889584739_hugb", new string[] {"RESURGENCE" , "707070" } },
-        {"GTrials", new string[] {"gTRIALS","707070" } },
-        { "github.com/ZlothY29IQ/GorillaMediaDisplay", new string[] { "gMEDIA DISPLAY", "B103FC" } },
-        { "github.com/ZlothY29IQ/TooMuchInfo", new string[] { "TOOMUCHINFO", "B103FC" } },
-        { "github.com/ZlothY29IQ/RoomUtils-IW", new string[] { "ROOMUTILS-IW", "B103FC" } },
-        { "github.com/ZlothY29IQ/MonkeClick", new string[] { "MONKECLICK", "B103FC" } },
-        { "github.com/ZlothY29IQ/MonkeClick-CI", new string[] { "MONKECLICK-CI", "B103FC" } },
-        { "github.com/ZlothY29IQ/MonkeRealism", new string[] { "MONKEREALISM", "B103FC" } },
-        { "WalkSimulator", new string[] { "WALKSIM ZLOTHY", "B103FC" } },
-        { "Dingus", new string[] { "DINGUS", "B103FC" } },
-        { "MediaPad", new string[] { "MEDIAPAD", "B103FC" } },
-        { "GorillaCinema", new string[] { "gCINEMA", "B103FC" } },
-        { "ChainedTogetherActive", new string[] { "CHAINEDTOGETHER", "B103FC" } },
-        { "GPronouns", new string[] { "gPRONOUNS", "707070" } },
-        { "CSVersion", new string[] {"CustomSkin", "707070"} },
-        { "github.com/ZlothY29IQ/Zloth-RecRoomRig", new string[] {"ZLOTHYBodyEst", "B103FC" } },
-        { "ShirtProperties", new string[] { "SHIRTS-OLD", "707070" } },
-        { "GorillaShirts", new string[] { "SHIRTS", "707070" } },
-        { "GS", new string[] { "OLD SHIRTS", "707070" } },
-        { "genesis", new string[] { "GENESIS", "DC143C" } },
-        { "ElixirMenu", new string[] { "ELIXIR", "DC143C" } },
-        { "elux", new string[] { "ELUX", "DC143C" } },
-        { "VioletFreeUser", new string[] { "VIOLETFREE", "DC143C" } },
-        { "Hidden Menu", new string[] { "HIDDEN", "DC143C" } },
-        { "HP_Left", new string[] { "HOLDABLEPAD", "B103FC" } },
-        { "GrateVersion", new string[] { "GRATE", "707070" } },
-        { "void", new string[] { "VOID", "DC143C" } },
-        { "BananaOS", new string[] { "BANANAOS", "FFFF00" } },
-        { "GC", new string[] { "GORILLACRAFT", "43B581" } },
-        { "CarName", new string[] { "VEHICLES", "43B581" } },
-        { "6XpyykmrCthKhFeUfkYGxv7xnXpoe2", new string[] { "CCMV2", "DC143C" } },
-        { "cronos", new string[] { "CRONOS", "DC143C" } },
-        { "ORBIT", new string[] { "ORBIT", "DC143C" } },
-        { "Violet On Top", new string[] { "VIOLET", "DC143C" } },
-        { "VioletPaidUser", new string[] { "VIOLETPAID", "DC143C" } },
-        { "MonkePhone", new string[] { "MONKEPHONE", "7AA11F" } },
-        { "Body Tracking", new string[] { "BODYTRACKING", "7AA11F" } },
-        { "Body Estimation", new string[] { "HANBodyEst", "7AA11F" } },
-        { "GorillaTorsoEstimator", new string[] { "TORSOEst", "7AA11F" } },
-        { "Gorilla Track", new string[] { "gTRACK", "7AA11F" } },
-        { "GorillaWatch", new string[] { "GORILLAWATCH", "707070" } },
-        { "InfoWatch", new string[] { "INFOWATCH", "707070" } },
-        { "BananaPhone", new string[] { "BANANAPHONE", "FFFC45" } },
-        { "Vivid", new string[] { "VIVID", "DC143C" } },
-        { "CustomMaterial", new string[] { "CUSTOMCOSMETICS", "707070" } },
-        { "cheese is gouda", new string[] { "WHOISTHATMONKE", "707070" } },
-        { "I like cheese", new string[] { "RECROOMRIG", "FE8232" } } };
-
-            foreach (KeyValuePair<string, string[]> specialMod in specialModsList)
+            foreach (var specialMod in specialModsList)
             {
                 if (creator.GetPlayerRef().CustomProperties.ContainsKey(specialMod.Key))
-                    specialMods += (specialMods == "" ? "" : ", ") + "<color=#" + specialMod.Value[1] + ">" + specialMod.Value[0] + "</color>";
+                    specialMods += (specialMods == "" ? "" : ", ") + $"<color=#{specialMod.Value[1]}>{specialMod.Value[0]}</color>";
             }
 
             CosmeticsController.CosmeticSet cosmeticSet = rig.cosmeticSet;
-            foreach (CosmeticsController.CosmeticItem cosmetic in cosmeticSet.items)
+            foreach (var cosmetic in cosmeticSet.items)
             {
                 if (!cosmetic.isNullItem && !rig.concatStringOfCosmeticsAllowed.Contains(cosmetic.itemName))
                 {
@@ -234,28 +126,26 @@ namespace TooMuchInfo
             return specialMods == "" ? null : specialMods;
         }
 
-
-        
-
-
-        static Dictionary<string, string> datePool = new Dictionary<string, string> { };
         static string CreationDate(VRRig rig)
         {
             string UserId = rig.Creator.UserId;
 
             if (datePool.ContainsKey(UserId))
                 return datePool[UserId];
-            else
+
+            datePool.Add(UserId, "LOADING");
+            PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest { PlayFabId = UserId }, result =>
             {
-                datePool.Add(UserId, "LOADING");
-                PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest { PlayFabId = UserId }, delegate (GetAccountInfoResult result)
-                {
-                    string date = result.AccountInfo.Created.ToString("MMM dd, yyyy").ToUpper();
-                    datePool[UserId] = date;
-                    rig.UpdateName();
-                }, delegate { datePool[UserId] = "ERROR"; rig.UpdateName(); }, null, null);
-                return "LOADING";
-            }
+                string date = result.AccountInfo.Created.ToString("MMM dd, yyyy").ToUpper();
+                datePool[UserId] = date;
+                rig.UpdateName();
+            }, error =>
+            {
+                datePool[UserId] = "ERROR";
+                rig.UpdateName();
+            }, null, null);
+
+            return "LOADING";
         }
 
         static string GetSpecialPlayerName(VRRig rig)
@@ -267,9 +157,6 @@ namespace TooMuchInfo
             }
             return null;
         }
-
-
-        
 
         static string GetPlatform(VRRig rig)
         {
@@ -290,9 +177,7 @@ namespace TooMuchInfo
 
             if (File.Exists(path))
             {
-                string[] existingLines = File.ReadAllLines(path);
-
-                foreach (string existingLine in existingLines)
+                foreach (string existingLine in File.ReadAllLines(path))
                 {
                     if (existingLine.Contains(idLinePrefix))
                         return;
@@ -325,7 +210,6 @@ namespace TooMuchInfo
             return rig.concatStringOfCosmeticsAllowed.Count(c => c == '.');
         }
 
-
         static string FormatColor(Color color)
         {
             return "<color=red>" + Math.Round(color.r * 9).ToString() +
@@ -340,41 +224,34 @@ namespace TooMuchInfo
                 string targetText = "Name";
                 NetPlayer creator = rig.Creator;
 
-
-
                 if (creator != null)
                 {
                     string specialName = GetSpecialPlayerName(rig);
                     string fullName = creator.NickName;
                     string userId = creator.UserId;
 
-
                     if (blacklisted.Contains(userId))
                     {
                         string blockedText = $"{creator.NickName}\n<color=#964B00>Users Details Blocked</color>";
-
                         rig.playerText1.text = blockedText;
                         rig.playerText2.text = Regex.Replace(blockedText, "<.*?>", "");
                         return;
                     }
 
                     if (specialName != null)
-                    {
                         fullName = fullName + $" <color=purple>{specialName}</color>";
-                    }
 
                     string modscount = CheckMods(rig);
                     List<string> lines = new List<string>();
 
-                    
-                        if (modscount != null)
-                            lines.Add(""); //more space lol
+                    if (modscount != null)
+                        lines.Add(""); // more space lol
 
-                    lines.Add("");  
-                    lines.Add(""); 
-                    lines.Add("");  
-                    lines.Add(fullName); 
-                                                         
+                    lines.Add("");
+                    lines.Add("");
+                    lines.Add("");
+                    lines.Add(fullName);
+
                     string cosmetics = CheckCosmetics(rig);
                     if (cosmetics != null)
                     {
@@ -400,9 +277,6 @@ namespace TooMuchInfo
                         }
                     }
 
-                    
-                    
-
                     string mods = CheckMods(rig);
                     if (mods != null) lines.Add(mods);
 
@@ -418,10 +292,6 @@ namespace TooMuchInfo
                     string platform = GetPlatform(rig);
                     if (platform != null) lines.Add(platform);
 
-                
-
-
-
                     targetText = string.Join("\n", lines);
                 }
 
@@ -432,5 +302,4 @@ namespace TooMuchInfo
             catch { }
         }
     }
-    
 }
