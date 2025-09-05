@@ -234,7 +234,7 @@ namespace TooMuchInfo
                     {
                         string blockedText = $"{creator.NickName}\n<color=#964B00>Users Details Blocked</color>";
                         rig.playerText1.text = blockedText;
-                        rig.playerText2.text = Regex.Replace(blockedText, "<.*?>", "");
+                        //rig.playerText2.text = Regex.Replace(blockedText, "<.*?>", "");
                         return;
                     }
 
@@ -297,7 +297,7 @@ namespace TooMuchInfo
 
                 Regex noRichText = new Regex("<.*?>");
                 rig.playerText1.text = targetText;
-                rig.playerText2.text = noRichText.Replace(targetText, "");
+                //rig.playerText2.text = noRichText.Replace(targetText, "");
             }
             catch { }
         }
