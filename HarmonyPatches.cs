@@ -3,17 +3,13 @@ using System;
 using System.Reflection;
 
 namespace TooMuchInfo
-{
-    /// <summary>
-    /// This class handles applying harmony patches to the game.
-    /// You should not need to modify this class.
-    /// </summary>
+{ 
     public class HarmonyPatches
     {
         private static Harmony instance;
 
         public static bool IsPatched { get; private set; }
-        public const string InstanceId = PluginInfo.GUID;
+        public const string InstanceId = Constants.GUID;
 
         internal static void ApplyHarmonyPatches()
         {

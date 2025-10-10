@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace TooMuchInfo
 {
-    [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
+    [BepInPlugin(Constants.GUID, Constants.Name, Constants.Version)]
     public class Plugin : BaseUnityPlugin
     {
         private static Dictionary<string, string[]> specialModsList = new Dictionary<string, string[]>();
@@ -32,9 +32,9 @@ namespace TooMuchInfo
 
             HarmonyPatches.ApplyHarmonyPatches();
 
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable()
             {
-                { PluginInfo.HashKey, PluginInfo.Version }
+                { Constants.HashKey, Constants.Version }
             });
         }
 
@@ -107,10 +107,17 @@ namespace TooMuchInfo
             string specialMods = "";
             NetPlayer creator = rig.Creator;
 
-            foreach (var specialMod in specialModsList)
+            var props = creator.GetPlayerRef().CustomProperties;
+            foreach (var prop in props)
             {
-                if (creator.GetPlayerRef().CustomProperties.ContainsKey(specialMod.Key))
-                    specialMods += (specialMods == "" ? "" : ", ") + $"<color=#{specialMod.Value[1]}>{specialMod.Value[0]}</color>";
+                string propKeyLower = prop.Key.ToString().ToLower();
+                foreach (var specialMod in specialModsList)
+                {
+                    if (propKeyLower == specialMod.Key.ToLower())
+                    {
+                        specialMods += (specialMods == "" ? "" : ", ") + $"<color=#{specialMod.Value[1]}>{specialMod.Value[0]}</color>";
+                    }
+                }
             }
 
             CosmeticsController.CosmeticSet cosmeticSet = rig.cosmeticSet;
@@ -125,6 +132,7 @@ namespace TooMuchInfo
 
             return specialMods == "" ? null : specialMods;
         }
+
 
         static string CreationDate(VRRig rig)
         {
@@ -234,7 +242,6 @@ namespace TooMuchInfo
                     {
                         string blockedText = $"{creator.NickName}\n<color=#964B00>Users Details Blocked</color>";
                         rig.playerText1.text = blockedText;
-                        //rig.playerText2.text = Regex.Replace(blockedText, "<.*?>", "");
                         return;
                     }
 
@@ -297,7 +304,6 @@ namespace TooMuchInfo
 
                 Regex noRichText = new Regex("<.*?>");
                 rig.playerText1.text = targetText;
-                //rig.playerText2.text = noRichText.Replace(targetText, "");
             }
             catch { }
         }
