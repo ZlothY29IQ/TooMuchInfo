@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TooMuchInfo.Patches
 {
-    [HarmonyPatch(typeof(VRRig), "UpdateName", new Type[] { typeof(bool) })]
+    [HarmonyPatch(typeof(VRRig), "UpdateName", new Type[] { typeof(bool), })]
     public class NamePatch
     {
         public static void Postfix(VRRig __instance, bool isNamePermissionEnabled)
